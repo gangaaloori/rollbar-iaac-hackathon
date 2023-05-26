@@ -1,0 +1,11 @@
+.envrc
+.direnv
+.idea/
+terraform.tfstate*
+.terraform.lock.hcl
+.terraform/**
+terraform/terraform.tfstate*
+terraform/.terraform.lock.hcl
+terraform/.terraform/**
+.DS_Store
+script/state.json

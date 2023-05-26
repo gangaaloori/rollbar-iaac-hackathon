@@ -1,0 +1,5 @@
+1. Run script to send test alerts and create environments
+2. Accept slack channels from the calling module
+3. Push code to GH and setup pipeline
+4. Create separate tokens with different scopes
+6. Integrate with Okta provider and setup teams
