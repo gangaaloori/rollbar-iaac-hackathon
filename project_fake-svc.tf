@@ -13,4 +13,9 @@ module "config_fake-svc" {
 
   service_account_id = var.slack_service_account_id
   project_api_key    = module.project_fake-svc.project_api_key
+  rollbar_env_slack_channel_map = {
+    "wip.in"  = "dev-alerts"
+    "stg.in"  = "dev-alerts"
+    "prod.in" = "prod-alerts"
+  }
 }

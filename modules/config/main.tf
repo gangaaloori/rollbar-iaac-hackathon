@@ -2,19 +2,22 @@
 # Enable Slack integration
 resource "rollbar_integration" "slack" {
   slack {
-    enabled            = true
-    channel            = "dev-alerts"
-    service_account_id = var.service_account_id
+    service_account_id   = var.service_account_id
+    channel              = "dev-alerts"
+    show_message_buttons = true
+    enabled              = true
   }
 }
 
 # Configure Slack alerts
 resource "rollbar_notification" "slack" {
+
+  for_each = var.rollbar_env_slack_channel_map
   rule {
     filters {
       type      = "environment"
       operation = "eq"
-      value     = "wip.in"
+      value     = each.key
     }
     filters {
       type      = "level"
@@ -26,7 +29,7 @@ resource "rollbar_notification" "slack" {
   channel = "slack"
   config {
     show_message_buttons = true
-    channel              = "dev-alerts"
+    channel              = each.value
   }
   depends_on = [rollbar_integration.slack]
 }
