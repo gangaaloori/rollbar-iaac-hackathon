@@ -1,0 +1,45 @@
+name: Pull Request to Master
+
+on:
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: terraform-state
+    
+jobs:
+  terraform-plan:
+    name: Terraform Plan
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    permissions: write-all
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3 
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -refresh=false -var rollbar_api_key=${{ secrets.ROLLBAR_API_KEY }} -var rollbar_api_key=$${{ secrets.SLACK_SERVICE_ACCOUNT_ID }} -no-color 2>&1 | tee /tmp/plan.txt
+          sed -i '/Refreshing state.../d' /tmp/plan.txt 
+          sed -i '/Reading.../d' /tmp/plan.txt
+          sed -i '/Read complete after/d' /tmp/plan.txt         
+        continue-on-error: true
+
+      - name: Fail if plan has failed
+        if: steps.plan.outputs.exitcode == 1
+        run: exit 1
