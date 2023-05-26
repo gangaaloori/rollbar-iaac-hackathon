@@ -14,3 +14,8 @@ variable "dd_service_link_url" {
   description = "DataDog Service Link URL"
   default     = "https://app.datadoghq.eu/apm/trace/{{custom.rollbar-logback.mdc.'dd.trace_id'}}?spanID={{custom.rollbar-logback.mdc.'dd.span_id'}}"
 }
+
+variable "rollbar_env_slack_channel_map" {
+  type        = map(string)
+  description = "Mapping between the Rollbar environment and the Slack channel"
+}
