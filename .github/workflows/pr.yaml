@@ -30,7 +30,10 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -refresh=false -var rollbar_api_key=${{ secrets.ROLLBAR_API_KEY }} -var rollbar_api_key=$${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
+        env:
+            TF_VAR_rollbar_api_key: ${{ secrets.ROLLBAR_API_KEY }}
+            TF_VAR_slack_service_account_id: $${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
+        run: terraform plan
         continue-on-error: true
 
       - name: Fail if plan has failed
