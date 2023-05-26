@@ -1,0 +1,36 @@
+name: Push to Main branch
+
+on:
+  push:
+    branches:
+      - 'main'
+
+concurrency:
+  group: terraform-state
+
+jobs:
+  terraform-apply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Apply
+        id: apply
+        env:
+            TF_VAR_rollbar_api_key: ${{ secrets.ROLLBAR_API_KEY }}
+            TF_VAR_slack_service_account_id: ${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
+        run: terraform apply -refresh=false --auto-approve
+
+
