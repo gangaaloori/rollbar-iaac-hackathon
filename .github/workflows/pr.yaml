@@ -1,9 +1,9 @@
-name: Pull Request to Master
+name: Pull Request to Main
 
 on:
   pull_request:
     branches:
-      - master
+      - main
 
 concurrency:
   group: terraform-state
