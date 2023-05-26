@@ -1,5 +1,5 @@
 
-# Create project
+# Create project  
 module "project_fake-svc" {
   source = "./modules/project"
 
