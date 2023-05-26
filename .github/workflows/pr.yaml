@@ -1,4 +1,4 @@
-name: Pull Request to Main
+name: Pull Request to Main branch
 
 on:
   pull_request:
@@ -32,7 +32,7 @@ jobs:
         id: plan
         env:
             TF_VAR_rollbar_api_key: ${{ secrets.ROLLBAR_API_KEY }}
-            TF_VAR_slack_service_account_id: $${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
+            TF_VAR_slack_service_account_id: ${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
         run: terraform plan
         continue-on-error: true
 
