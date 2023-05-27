@@ -17,14 +17,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3 
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      
-      - name: Install Python Rollbar package
-        run: pip3 install rollbar
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
@@ -43,13 +35,6 @@ jobs:
             TF_VAR_slack_service_account_id: ${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
         run: terraform plan
         continue-on-error: true
-
-      - name: Terraform Apply
-        id: apply
-        env:
-            TF_VAR_rollbar_api_key: ${{ secrets.ROLLBAR_API_KEY }}
-            TF_VAR_slack_service_account_id: ${{ secrets.SLACK_SERVICE_ACCOUNT_ID }}
-        run: terraform apply -refresh=false --auto-approve        
 
       - name: Fail if plan has failed
         if: steps.plan.outputs.exitcode == 1
