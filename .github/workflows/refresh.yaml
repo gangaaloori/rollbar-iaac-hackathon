@@ -1,0 +1,35 @@
+name: Refresh TF state
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+
+concurrency:
+  group: terraform-state
+
+jobs:
+  terraform-refresh:
+    name: Terraform Refresh
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+        with:
+          ref: main
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Refresh
+        id: refresh
+        run: terraform apply -refresh-only --auto-approve

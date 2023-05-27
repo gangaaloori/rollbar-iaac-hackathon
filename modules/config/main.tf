@@ -31,6 +31,11 @@ resource "rollbar_notification" "slack" {
     show_message_buttons = true
     channel              = each.value
   }
+
+  provisioner "local-exec" {
+    command = "python3 scripts/rollbar_report_message.py ${var.project_api_key} ${each.key}"
+  }
+
   depends_on = [rollbar_integration.slack]
 }
 
