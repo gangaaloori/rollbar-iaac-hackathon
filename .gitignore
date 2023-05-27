@@ -44,3 +44,4 @@ terraform/.terraform.lock.hcl
 terraform/.terraform/**
 .DS_Store
 script/state.json
+scripts/__pycache__/**
