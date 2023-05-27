@@ -33,7 +33,7 @@ resource "rollbar_notification" "slack" {
   }
 
   provisioner "local-exec" {
-    command = "python scripts/rollbar.py"
+    command = "python scripts/rollbar.py ${each.key}"
   }
 
   depends_on = [rollbar_integration.slack]
